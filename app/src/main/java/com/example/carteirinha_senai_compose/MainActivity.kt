@@ -1,5 +1,6 @@
 package com.example.carteirinha_senai_compose
 
+import android.media.Image
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -26,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.carteirinha_senai_compose.ui.theme.CarteirinhaSENAIComposeTheme
+import qrgenerator.qrkitpainter.rememberQrKitPainter
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +64,7 @@ fun Main(){
         Logo(maxWidthModifier.align(Alignment.CenterHorizontally).padding(30.dp))
         Name(maxWidthModifier.align(Alignment.CenterHorizontally))
         ProfilePicture(maxWidthModifier.align(Alignment.CenterHorizontally).padding(10.dp))
-        QRCode(maxWidthModifier.align(Alignment.CenterHorizontally).size(200.dp))
+        QRCode(maxWidthModifier.align(Alignment.CenterHorizontally).size(200.dp), "Generic QR Code")
         Box(Modifier
             .fillMaxWidth()
             .height(150.dp)
@@ -128,10 +131,10 @@ fun Background(){
 
 @Preview
 @Composable
-fun QRCode(modifier: Modifier = Modifier){
+fun QRCode(modifier: Modifier = Modifier, content: String = "Empty QR Code"){
     Image(
-        painter = painterResource(R.drawable.qr_code),
-        contentDescription = "Profile Picture",
+        painter = QRCodeGenerator(content),
+        contentDescription = "QR Code",
         contentScale = ContentScale.Fit,
         modifier = modifier
     )
@@ -149,3 +152,7 @@ fun Information(info : String = "Data", content : String = "-", modifier: Modifi
 }
 
 
+@Composable
+fun QRCodeGenerator(data: String) : Painter{
+    return rememberQrKitPainter(data = data)
+}
